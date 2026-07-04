@@ -1,0 +1,1596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Factor Lab | Project KABULIG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FFF6E9;
+    --navy:#1B1F3B;
+    --yellow:#FFC93C;
+    --coral:#FF6B6B;
+    --teal:#06AED5;
+    --green:#6BCB77;
+    --purple:#8C6FE6;
+    --white:#FFFFFF;
+    --line:#E7DFC9;
+    --shadow: 6px 6px 0 rgba(27,31,59,0.12);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      linear-gradient(rgba(255,246,233,0.78), rgba(255,246,233,0.78)),
+      radial-gradient(circle at 8% 12%, #FFECC2 0%, transparent 40%),
+      radial-gradient(circle at 92% 85%, #CFF3FF 0%, transparent 40%),
+      url('https://raw.githubusercontent.com/projectkabulig-dev/factoring/main/factor-lab-background.png.png') center/cover no-repeat,
+      var(--cream);
+    background-attachment: scroll;
+    font-family:'Nunito',sans-serif;
+    color:var(--navy);
+    min-height:100vh;
+  }
+  h1,h2,h3,.display{font-family:'Baloo 2',cursive;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+
+  header{
+    padding:22px 20px 14px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand .logo{
+    width:44px;height:44px;border-radius:12px;
+    background:var(--navy);
+    display:flex;align-items:center;justify-content:center;
+    font-size:22px;transform:rotate(-6deg);
+    box-shadow:var(--shadow);
+  }
+  .brand h1{margin:0;font-size:1.4rem;color:var(--navy);}
+  .brand p{margin:0;font-size:0.75rem;color:#8a8465;font-weight:700;letter-spacing:.04em;text-transform:uppercase;}
+  .scoreboard{
+    background:var(--navy);color:var(--white);
+    padding:10px 18px;border-radius:16px;
+    display:flex;gap:18px;align-items:center;
+    box-shadow:var(--shadow);
+  }
+  .scoreboard .item{text-align:center;}
+  .scoreboard .num{font-family:'IBM Plex Mono',monospace;font-size:1.25rem;font-weight:700;color:var(--yellow);}
+  .scoreboard .lbl{font-size:0.62rem;text-transform:uppercase;letter-spacing:.06em;opacity:.75;}
+
+  .hero{
+    margin:6px 20px 26px;
+    background:var(--navy);
+    border-radius:26px;
+    padding:34px 28px;
+    color:var(--white);
+    position:relative;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+  }
+  .hero:before{
+    content:"";
+    position:absolute;top:-60px;right:-60px;
+    width:220px;height:220px;border-radius:50%;
+    background:radial-gradient(circle, rgba(255,201,60,0.35), transparent 70%);
+  }
+  .hero h2{font-size:1.9rem;margin:0 0 6px;position:relative;}
+  .hero p{margin:0;max-width:520px;opacity:.85;line-height:1.5;font-size:0.95rem;position:relative;}
+  .hero .credit{
+    margin-top:10px;font-size:0.78rem;opacity:.7;font-weight:700;letter-spacing:.03em;position:relative;
+  }
+
+  /* ---------- LANDING & LOGIN ---------- */
+  .full-view{
+    min-height:100vh;display:flex;align-items:center;justify-content:center;
+    padding:24px;
+  }
+  .landing-card{
+    background:var(--white);
+    border-radius:26px;
+    padding:44px 32px;
+    max-width:440px;
+    width:100%;
+    text-align:center;
+    box-shadow:var(--shadow);
+  }
+  .landing-logo{
+    width:64px;height:64px;border-radius:18px;background:var(--navy);
+    display:flex;align-items:center;justify-content:center;font-size:32px;
+    margin:0 auto 16px;transform:rotate(-6deg);
+  }
+  .landing-eyebrow{
+    margin:0 0 4px;font-size:0.78rem;font-weight:800;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--teal);
+  }
+  .landing-title{font-size:2.4rem;margin:0 0 14px;color:var(--navy);}
+  .login-title{font-size:1.5rem;margin:6px 0 10px;color:var(--navy);}
+  .landing-desc{font-size:0.92rem;color:#555;line-height:1.55;margin:0 0 24px;}
+  .landing-credit{margin-top:20px;font-size:0.78rem;font-weight:700;color:#8a8465;letter-spacing:.03em;}
+  .school-input{
+    width:100%;font-family:'Nunito',sans-serif;font-size:1rem;
+    padding:13px 16px;border-radius:12px;border:2px solid var(--line);
+    background:var(--cream);text-align:center;margin-bottom:6px;
+    box-sizing:border-box;
+  }
+  .school-input#schoolNameInput{width:100%;}
+  .school-label{
+    display:block;font-weight:800;font-size:0.85rem;color:var(--navy);
+    margin-bottom:8px;text-align:center;
+  }
+  .school-input:focus{outline:none;border-color:var(--teal);}
+  .login-error{color:var(--coral);font-weight:700;font-size:0.82rem;min-height:20px;margin-bottom:8px;}
+  .funnel-demo{
+    margin-top:22px;display:flex;align-items:center;gap:14px;
+    font-family:'IBM Plex Mono',monospace;font-size:1.05rem;flex-wrap:wrap;position:relative;
+  }
+  .funnel-shape{
+    width:0;height:0;
+    border-left:26px solid transparent;
+    border-right:26px solid transparent;
+    border-top:34px solid var(--yellow);
+    position:relative;
+  }
+  .pill{background:rgba(255,255,255,.12);padding:6px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.2);}
+  .pill.out{background:var(--green);color:var(--navy);font-weight:700;border:none;}
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:16px;
+    padding:0 20px 40px;
+  }
+  .card{
+    background:var(--white);
+    border-radius:20px;
+    padding:20px;
+    cursor:pointer;
+    border:3px solid transparent;
+    box-shadow:var(--shadow);
+    transition:transform .15s ease, border-color .15s ease;
+    position:relative;
+  }
+  .card:hover{transform:translateY(-4px) rotate(-0.5deg);}
+  .card .icon{
+    width:52px;height:52px;border-radius:14px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:26px;margin-bottom:12px;
+  }
+  .card h3{margin:0 0 6px;font-size:1.15rem;}
+  .card p{margin:0;font-size:0.85rem;color:#555;line-height:1.4;}
+  .card .tag{
+    position:absolute;top:16px;right:16px;
+    font-family:'IBM Plex Mono',monospace;font-size:0.7rem;
+    background:var(--cream);padding:3px 9px;border-radius:8px;color:#8a8465;font-weight:600;
+  }
+  .card.done{border-color:var(--green);}
+  .card.done:after{
+    content:"✓ Completed";
+    position:absolute;bottom:16px;right:16px;
+    font-size:0.7rem;font-weight:800;color:var(--green);
+  }
+
+  .c1 .icon{background:#FFE7B3;}
+  .c2 .icon{background:#D6F3FF;}
+  .c3 .icon{background:#E5DBFF;}
+  .c4 .icon{background:#FFD7D7;}
+  .c5 .icon{background:#D9F7DE;}
+  .c6 .icon{background:#FFE3EE;}
+  .c7 .icon{background:#DCE8FF;}
+  .c8 .icon{background:#FFDCEC;}
+
+  .module-view{display:none;padding:0 20px 60px;}
+  .module-view.active{display:block;}
+  .back-btn{
+    background:none;border:none;font-family:'Nunito';font-weight:800;
+    color:var(--navy);cursor:pointer;font-size:0.95rem;
+    display:flex;align-items:center;gap:6px;margin-bottom:14px;padding:8px 0;
+  }
+  .problem-card{
+    background:var(--white);border-radius:22px;padding:26px;
+    box-shadow:var(--shadow);max-width:640px;margin:0 auto;
+  }
+  .problem-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+  .problem-head .idx{font-family:'IBM Plex Mono',monospace;font-size:0.8rem;color:#8a8465;font-weight:600;}
+  .expr{
+    font-family:'IBM Plex Mono',monospace;font-size:1.7rem;font-weight:600;
+    text-align:center;margin:14px 0 22px;color:var(--navy);
+    letter-spacing:.02em;
+  }
+  .feedback{
+    min-height:28px;text-align:center;font-weight:800;margin-top:14px;font-size:0.95rem;
+  }
+  .feedback.ok{color:var(--green);}
+  .feedback.no{color:var(--coral);}
+  .btn{
+    font-family:'Baloo 2';font-weight:700;font-size:0.95rem;
+    background:var(--navy);color:var(--white);border:none;
+    padding:11px 22px;border-radius:12px;cursor:pointer;
+    box-shadow:4px 4px 0 rgba(0,0,0,0.15);
+    transition:transform .1s ease;
+  }
+  .btn:hover{transform:translateY(-2px);}
+  .btn:active{transform:translateY(0);}
+  .btn.secondary{background:var(--white);color:var(--navy);border:2px solid var(--navy);box-shadow:none;}
+  .btn-row{display:flex;gap:10px;justify-content:center;margin-top:18px;flex-wrap:wrap;}
+  .btn:disabled{opacity:.4;cursor:not-allowed;}
+
+  input[type=text]{
+    font-family:'IBM Plex Mono',monospace;font-size:1rem;
+    padding:9px 12px;border-radius:10px;border:2px solid var(--line);
+    width:120px;text-align:center;background:var(--cream);
+  }
+  input[type=text]:focus{outline:none;border-color:var(--teal);}
+
+  .chip-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:16px 0;}
+  .chip{
+    font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:0.95rem;
+    background:var(--yellow);padding:9px 16px;border-radius:12px;
+    cursor:grab;user-select:none;box-shadow:3px 3px 0 rgba(0,0,0,0.12);
+    border:2px solid transparent;
+  }
+  .chip:active{cursor:grabbing;}
+  .chip.used{opacity:.35;cursor:not-allowed;}
+  .chip.mc{cursor:pointer;background:var(--white);border:2px solid var(--line);}
+  .chip.mc:hover{border-color:var(--teal);}
+  .chip.mc.selected{background:var(--teal);color:var(--white);}
+
+  .slot{
+    display:inline-flex;align-items:center;justify-content:center;
+    min-width:70px;height:40px;border:2px dashed #c9c2a3;border-radius:10px;
+    background:var(--cream);font-family:'IBM Plex Mono',monospace;font-weight:700;
+    padding:0 10px;vertical-align:middle;
+  }
+  .slot.filled{border-style:solid;border-color:var(--teal);background:#E9F9FF;}
+  .slot.over{border-color:var(--coral);background:#FFF0F0;}
+
+  .box-grid-v2{
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto auto auto;
+    gap:2px;max-width:480px;margin:20px auto 0;background:var(--navy);
+    border-radius:12px;overflow:hidden;
+  }
+  .bg-cell{
+    background:var(--white);padding:14px 8px;text-align:center;
+    font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:1.05rem;
+    min-height:52px;display:flex;align-items:center;justify-content:center;
+  }
+  .bg-cell.bg-num{background:#FFF1CE;}
+  .bg-cell.bg-header{background:var(--navy);color:var(--white);font-size:0.95rem;}
+  .cross-cell{position:relative;}
+  .cross-arrow{
+    position:absolute;top:4px;left:6px;font-size:0.75rem;
+    color:var(--coral);font-weight:800;line-height:1;
+  }
+  .cross-legend{
+    max-width:480px;margin:0 auto 4px;text-align:center;font-size:0.7rem;
+    color:#8a8465;font-weight:600;line-height:1.4;
+  }
+  .answer-bar{
+    max-width:100%;width:fit-content;margin:8px auto 16px;padding:10px 10px;text-align:center;
+    font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:0.8rem;
+    background:#FFF1CE;border:2px solid var(--line);
+    border-radius:12px;color:var(--navy);
+    display:flex;align-items:center;justify-content:center;flex-wrap:nowrap;gap:2px;
+    white-space:nowrap;
+  }
+  .answer-input{width:30px;flex-shrink:0;padding:5px 2px;font-size:0.85rem;}
+  .grid-input{
+    width:84px; text-align:center;font-family:'IBM Plex Mono',monospace;
+    font-size:1.15rem;font-weight:700;padding:9px 6px;border-radius:8px;
+    border:2px solid var(--teal);background:var(--white);
+  }
+  .grid-input:focus{outline:none;border-color:var(--coral);}
+
+  .example-box{max-width:460px;margin:0 auto 16px;}
+  .example-toggle{
+    width:100%;text-align:left;background:#EAF6FA;border:2px solid var(--teal);
+    border-radius:12px;padding:10px 14px;font-family:'Nunito';font-weight:800;
+    font-size:0.88rem;color:var(--navy);cursor:pointer;
+  }
+  .example-content{
+    background:#F5FBFD;border:2px dashed var(--teal);border-top:none;
+    border-radius:0 0 12px 12px;padding:12px 14px;font-size:0.85rem;color:#2b4c56;
+  }
+  .example-grid{max-width:280px;margin:8px auto 0;}
+  .example-grid .bg-cell{font-size:0.8rem;min-height:38px;padding:8px 4px;}
+
+  .group-zone{
+    display:flex;gap:14px;justify-content:center;margin:18px 0;flex-wrap:wrap;
+  }
+  .zone{
+    flex:1;min-width:160px;min-height:110px;
+    border:3px dashed var(--line);border-radius:16px;padding:12px;
+    background:var(--cream);
+  }
+  .zone.over{border-color:var(--teal);background:#E9F9FF;}
+  .zone h4{margin:0 0 8px;font-size:0.8rem;text-transform:uppercase;letter-spacing:.05em;color:#8a8465;}
+  .term-chip{
+    display:inline-block;margin:4px;background:var(--white);border:2px solid var(--line);
+    padding:7px 12px;border-radius:10px;font-family:'IBM Plex Mono',monospace;font-weight:600;
+    cursor:grab;
+  }
+
+  .hint-box{
+    background:#FFF8E1;border-left:4px solid var(--yellow);border-radius:10px;
+    padding:10px 14px;font-size:0.82rem;margin-top:16px;color:#6b5f30;line-height:1.5;
+  }
+  footer{text-align:center;padding:24px;font-size:0.78rem;color:#8a8465;font-weight:600;}
+  footer .credit{display:block;margin-top:4px;color:#a49f82;font-weight:700;letter-spacing:.02em;}
+  @media (max-width:480px){
+    .expr{font-size:1.3rem;}
+    .hero h2{font-size:1.5rem;}
+    .grid-input{width:64px;font-size:1rem;padding:7px 4px;}
+  }
+</style>
+</head>
+<body>
+
+<section id="landingView" class="full-view">
+  <div class="landing-card">
+    <div class="landing-logo">🧮</div>
+    <p class="landing-eyebrow">Project KABULIG</p>
+    <h1 class="landing-title">Factor Lab</h1>
+    <p class="landing-desc">Six interactive machines that turn tricky polynomials into easy, step-by-step factoring wins — built for Grade 8–10 Math learners of SDO Romblon.</p>
+    <button class="btn" id="landingStartBtn">Get Started</button>
+    <div class="landing-credit">✦ Developed by Sir Dyon</div>
+  </div>
+</section>
+
+<section id="loginView" class="full-view" style="display:none;">
+  <div class="landing-card">
+    <p class="landing-eyebrow">Before we begin</p>
+    <h2 class="login-title">Which school are you from?</h2>
+    <p class="landing-desc">This helps Sir Dyon see which schools are using Factor Lab.</p>
+    <label class="school-label" for="schoolNameInput">Your school name</label>
+    <input type="text" id="schoolNameInput" placeholder="e.g. Alcantara Central School" class="school-input">
+    <div id="loginError" class="login-error"></div>
+    <button class="btn" id="loginContinueBtn">Continue</button>
+  </div>
+</section>
+
+<header id="mainHeader" style="display:none;">
+  <div class="brand">
+    <div class="logo">🧮</div>
+    <div>
+      <h1>Factor Lab</h1>
+      <p>Project KABULIG · Grade 8–10</p>
+    </div>
+  </div>
+  <div class="scoreboard">
+    <div class="item"><div class="num" id="scoreTotal">0</div><div class="lbl">Points</div></div>
+    <div class="item"><div class="num" id="scoreDone">0/8</div><div class="lbl">Machines</div></div>
+  </div>
+</header>
+
+<section id="homeView" style="display:none;">
+  <div class="hero">
+    <h2>Drop the polynomial into the Factor Machine.</h2>
+    <p>Eight machines, eight algebra skills. Pick a machine below — drag, complete each step, and build the correct answer. Every machine gives you 10 fresh problems, shuffled and randomly generated each time you play.</p>
+    <div class="funnel-demo">
+      <span class="pill">x² + 13x + 36</span>
+      <div class="funnel-shape"></div>
+      <span class="pill out">(x + 4)(x + 9)</span>
+    </div>
+  </div>
+
+  <div class="grid" id="cardGrid">
+    <div class="card c1" data-mod="gcf">
+      <span class="tag">Type 1</span>
+      <div class="icon">🧲</div>
+      <h3>GCF Grabber</h3>
+      <p>Pull out the Greatest Common Monomial Factor from the expression.</p>
+    </div>
+    <div class="card c2" data-mod="diffsq">
+      <span class="tag">Type 2</span>
+      <div class="icon">➗</div>
+      <h3>Square Splitter</h3>
+      <p>Difference of Two Squares — a² − b² = (a+b)(a−b)</p>
+    </div>
+    <div class="card c3" data-mod="pst">
+      <span class="tag">Type 3</span>
+      <div class="icon">🪞</div>
+      <h3>Mirror Match</h3>
+      <p>Perfect Square Trinomial — spot it and build (a±b)².</p>
+    </div>
+    <div class="card c4" data-mod="trinomial">
+      <span class="tag">Type 4</span>
+      <div class="icon">📦</div>
+      <h3>Box Method</h3>
+      <p>General Trinomial ax²+bx+c — just like the whiteboard trick.</p>
+    </div>
+    <div class="card c5" data-mod="cubes">
+      <span class="tag">Type 5</span>
+      <div class="icon">🎲</div>
+      <h3>Cube Cracker</h3>
+      <p>Sum/Difference of Two Cubes using a formula scaffold.</p>
+    </div>
+    <div class="card c6" data-mod="grouping">
+      <span class="tag">Type 6</span>
+      <div class="icon">🧺</div>
+      <h3>Group &amp; Sort</h3>
+      <p>Factoring by Grouping — split 4 terms into two groups.</p>
+    </div>
+    <div class="card c7" data-mod="completesquare">
+      <span class="tag">Bonus</span>
+      <div class="icon">📐</div>
+      <h3>Square Completer</h3>
+      <p>Completing the Square — turn x²+bx+c into (x+k)²+d.</p>
+    </div>
+    <div class="card c8" data-mod="solvesquare">
+      <span class="tag">Bonus</span>
+      <div class="icon">🎯</div>
+      <h3>Equation Solver</h3>
+      <p>Solve by Completing the Square — find x when x²+bx+c=0.</p>
+    </div>
+  </div>
+</section>
+
+<section class="module-view" id="moduleView">
+  <button class="back-btn" onclick="goHome()">← Back to Factor Lab</button>
+  <div class="problem-card" id="problemCard"></div>
+</section>
+
+<footer>
+  Project KABULIG · Factor Lab
+  <span class="credit">Developed by Sir Dyon for the learners of SDO Romblon</span>
+</footer>
+
+<script>
+/* ============ CONFIG ============ */
+// This app is hosted directly by Google Apps Script, so logging uses
+// google.script.run (built into HtmlService) instead of fetch — no URL
+// or CORS setup needed. See Code.gs for the server-side functions.
+
+function logToSheet(payload){
+  try{
+    if(payload.action === "login"){
+      google.script.run.recordLogin(payload.school || "");
+    } else if(payload.action === "complete"){
+      google.script.run.recordCompletion(payload.school || "", payload.module || "", payload.score || 0, payload.possible || 0);
+    } else if(payload.action === "all_complete"){
+      google.script.run.recordAllComplete(payload.school || "", payload.score || 0);
+    }
+  } catch(err){ /* ignore logging errors so the game never breaks */ }
+}
+
+/* ============ STATE ============ */
+let totalScore = 0;
+let completedModules = new Set();
+let SESSION = {}; // holds the 10 freshly generated items per module, per play session
+let SCHOOL_NAME = "";
+
+/* ============ LANDING / LOGIN FLOW ============ */
+document.getElementById('landingStartBtn').addEventListener('click', ()=>{
+  document.getElementById('landingView').style.display = 'none';
+  document.getElementById('loginView').style.display = 'flex';
+  document.getElementById('schoolNameInput').focus();
+});
+
+function submitLogin(){
+  const input = document.getElementById('schoolNameInput');
+  const errBox = document.getElementById('loginError');
+  const name = input.value.trim();
+  if(!name){
+    errBox.textContent = "Please type your school name first.";
+    return;
+  }
+  errBox.textContent = "";
+  SCHOOL_NAME = name;
+  logToSheet({timestamp:new Date().toISOString(), school:SCHOOL_NAME, action:"login"});
+  document.getElementById('loginView').style.display = 'none';
+  document.getElementById('mainHeader').style.display = 'flex';
+  document.getElementById('homeView').style.display = 'block';
+}
+document.getElementById('loginContinueBtn').addEventListener('click', submitLogin);
+document.getElementById('schoolNameInput').addEventListener('keydown', e=>{
+  if(e.key === 'Enter') submitLogin();
+});
+
+function updateScoreboard(){
+  document.getElementById('scoreTotal').textContent = totalScore;
+  document.getElementById('scoreDone').textContent = completedModules.size + "/8";
+}
+function markModuleDone(modId){
+  completedModules.add(modId);
+  document.querySelector('.card[data-mod="'+modId+'"]').classList.add('done');
+  updateScoreboard();
+}
+
+/* ============ RANDOM HELPERS ============ */
+function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+function shuffle(arr){return arr.map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(v=>v[1]);}
+function pickSign(){ return Math.random()<0.5 ? '+' : '−'; }
+function wireExampleToggle(){
+  const btn = document.getElementById('toggleExample');
+  const content = document.getElementById('exampleContent');
+  if(!btn || !content) return;
+  btn.onclick = ()=>{
+    const isHidden = content.style.display === 'none';
+    content.style.display = isHidden ? 'block' : 'none';
+    btn.textContent = isHidden ? "📖 Hide example" : "📖 See a worked example first";
+  };
+}
+
+/* ============ ITEM GENERATORS ============ */
+function genGCF(){
+  const shape = randInt(1,4);
+  const g = randInt(2,9);
+  let a = randInt(2,9), b = randInt(2,9);
+  while(a===b) b = randInt(2,9);
+  const sign = pickSign();
+  const signRest = sign==='+' ? '+' : '-';
+  let expr, gcf, rest, options;
+  if(shape===1){
+    expr = `${g*a}x\u00B2 ${sign} ${g*b}x`;
+    gcf = `${g}x`;
+    rest = `${a}x${signRest}${b}`;
+    options = [gcf, `${g}`, `x`, `${g*a}x`];
+  } else if(shape===2){
+    expr = `${g*a}x\u00B3 ${sign} ${g*b}x\u00B2`;
+    gcf = `${g}x\u00B2`;
+    rest = `${a}x${signRest}${b}`;
+    options = [gcf, `${g}x`, `${g}`, `x\u00B2`];
+  } else if(shape===3){
+    expr = `${g*a}xy ${sign} ${g*b}x`;
+    gcf = `${g}x`;
+    rest = `${a}y${signRest}${b}`;
+    options = [gcf, `${g}`, `y`, `${g}y`];
+  } else {
+    expr = `${g*a}x\u00B2y ${sign} ${g*b}xy\u00B2`;
+    gcf = `${g}xy`;
+    rest = `${a}x${signRest}${b}y`;
+    options = [gcf, `${g}x`, `${g}y`, `${g}`];
+  }
+  return {expr, gcf, rest, options};
+}
+
+function genDiffSq(){
+  const twoVar = Math.random()<0.4;
+  const m = randInt(1,4);
+  const aDisp = m===1 ? 'x' : `${m}x`;
+  const sqA = m*m===1 ? 'x\u00B2' : `${m*m}x\u00B2`;
+  if(twoVar){
+    const p = randInt(1,4);
+    const bDisp = p===1 ? 'y' : `${p}y`;
+    const sqB = p*p===1 ? 'y\u00B2' : `${p*p}y\u00B2`;
+    const expr = `${sqA} \u2212 ${sqB}`;
+    return {expr, a:aDisp, b:bDisp};
+  } else {
+    const n = randInt(2,12);
+    const expr = `${sqA} \u2212 ${n*n}`;
+    return {expr, a:aDisp, b:`${n}`};
+  }
+}
+
+function genPST(){
+  const isPST = Math.random() < 0.72;
+  const m = randInt(1,4);
+  const n = randInt(2,9);
+  const sign = pickSign();
+  const aDisp = m===1 ? 'x' : `${m}x`;
+  const sqTerm = m*m===1 ? 'x\u00B2' : `${m*m}x\u00B2`;
+  const middleCoef = 2*m*n;
+  if(isPST){
+    const expr = `${sqTerm} ${sign} ${middleCoef}x + ${n*n}`;
+    return {expr, isPST:true, a:aDisp, b:`${n}`, sign};
+  } else {
+    let fakeMid = middleCoef + (Math.random()<0.5 ? 2 : -2);
+    if(fakeMid<=0) fakeMid = middleCoef+4;
+    const expr = `${sqTerm} ${sign} ${fakeMid}x + ${n*n}`;
+    return {expr, isPST:false};
+  }
+}
+
+function genTrinomial(){
+  let a1,a2,c1,c2,a,b,c;
+  let tries = 0;
+  do {
+    const simple = Math.random() < 0.55;
+    a1 = simple ? 1 : randInt(2,3);
+    a2 = simple ? 1 : randInt(1,2);
+    c1 = randInt(-6,6); while(c1===0) c1 = randInt(-6,6);
+    c2 = randInt(-6,6); while(c2===0) c2 = randInt(-6,6);
+    a = a1*a2; b = a1*c2 + a2*c1; c = c1*c2;
+    tries++;
+  } while(b===0 && tries<50);
+  const bSign = b>=0 ? '+' : '\u2212';
+  const cSign = c>=0 ? '+' : '\u2212';
+  const aDisp = a===1 ? 'x\u00B2' : `${a}x\u00B2`;
+  const expr = `${aDisp} ${bSign} ${Math.abs(b)}x ${cSign} ${Math.abs(c)}`;
+  return {a, b, c, a1, a2, c1, c2, expr};
+}
+
+function genCubes(){
+  const m = randInt(1,3);
+  const n = randInt(1,5);
+  const sign = pickSign();
+  const aDisp = m===1 ? 'x' : `${m}x`;
+  const aCubeCoef = m*m*m;
+  const aCubeDisp = aCubeCoef===1 ? 'x\u00B3' : `${aCubeCoef}x\u00B3`;
+  const expr = `${aCubeDisp} ${sign} ${n*n*n}`;
+  return {expr, a:aDisp, b:`${n}`, sign};
+}
+
+function genGrouping(){
+  const m = randInt(1,5);
+  const n = randInt(1,5);
+  const k = randInt(1,5);
+  const sign = pickSign();
+  const t1 = m===1 ? 'x\u00B3' : `${m}x\u00B3`;
+  const t2 = `${sign}${m*k}x\u00B2`;
+  const t3 = `+${n}x`;
+  const t4 = `${sign}${n*k}`;
+  const terms = [t1, t2, t3, t4];
+  const f1 = m===1 ? 'x\u00B2' : `${m}x\u00B2`;
+  const f2 = `${n}`;
+  const common = sign==='+' ? `x+${k}` : `x-${k}`;
+  return {terms, g1:[t1,t2], g2:[t3,t4], f1, f2, common};
+}
+
+function genCompleteSquare(){
+  let k = randInt(-7,7); while(k===0) k = randInt(-7,7);
+  const b = 2*k;
+  const c = randInt(-10,10);
+  const kSq = k*k;
+  const outerConst = c - kSq;
+  const bSign = b>=0 ? '+' : '\u2212';
+  let expr;
+  if(c===0){
+    expr = `x\u00B2 ${bSign} ${Math.abs(b)}x`;
+  } else {
+    const cSign = c>=0 ? '+' : '\u2212';
+    expr = `x\u00B2 ${bSign} ${Math.abs(b)}x ${cSign} ${Math.abs(c)}`;
+  }
+  return {b, c, k, kSq, outerConst, expr};
+}
+
+function genSolveSquare(){
+  let k = randInt(-7,7); while(k===0) k = randInt(-7,7);
+  let m = randInt(0,7);
+  const b = 2*k;
+  const c = k*k - m*m;
+  const bSign = b>=0 ? '+' : '\u2212';
+  let expr;
+  if(c===0){
+    expr = `x\u00B2 ${bSign} ${Math.abs(b)}x = 0`;
+  } else {
+    const cSign = c>=0 ? '+' : '\u2212';
+    expr = `x\u00B2 ${bSign} ${Math.abs(b)}x ${cSign} ${Math.abs(c)} = 0`;
+  }
+  const kSq = k*k;
+  const moveConst = -c;
+  const rightAfterAdd = moveConst + kSq;
+  const x1 = -k + m, x2 = -k - m;
+  return {b, c, k, m, kSq, moveConst, rightAfterAdd, x1, x2, expr};
+}
+
+const GENERATORS = { gcf:genGCF, diffsq:genDiffSq, pst:genPST, trinomial:genTrinomial, cubes:genCubes, grouping:genGrouping, completesquare:genCompleteSquare, solvesquare:genSolveSquare };
+
+function buildSession(modId, count){
+  const arr = [];
+  for(let i=0;i<count;i++) arr.push(GENERATORS[modId]());
+  return arr;
+}
+
+/* ============ NAVIGATION ============ */
+document.querySelectorAll('.card').forEach(c=>{
+  c.addEventListener('click', ()=> openModule(c.dataset.mod));
+});
+function goHome(){
+  document.getElementById('homeView').style.display='block';
+  document.getElementById('moduleView').classList.remove('active');
+}
+function openModule(modId){
+  document.getElementById('homeView').style.display='none';
+  document.getElementById('moduleView').classList.add('active');
+  SESSION[modId] = buildSession(modId, 10);
+  RENDERERS[modId](0, 0);
+}
+
+const MODULE_TITLES = {
+  gcf:"🧲 GCF Grabber", diffsq:"➗ Square Splitter", pst:"🪞 Mirror Match",
+  trinomial:"📦 Box Method", cubes:"🎲 Cube Cracker", grouping:"🧺 Group & Sort",
+  completesquare:"📐 Square Completer", solvesquare:"🎯 Equation Solver"
+};
+
+function moduleComplete(modId, earned, possible){
+  totalScore += earned;
+  markModuleDone(modId);
+  updateScoreboard();
+  logToSheet({timestamp:new Date().toISOString(), school:SCHOOL_NAME, module:modId, action:"complete", score:earned, possible:possible});
+
+  const card = document.getElementById('problemCard');
+  if(completedModules.size === 8){
+    card.innerHTML = `
+      <div style="text-align:center;">
+        <div style="font-size:3.4rem;">🏆</div>
+        <h2>Congratulations!</h2>
+        <p style="font-size:1.05rem;">You've finished all 8 Factor Machines!</p>
+        <p>Total score: <b>${totalScore}</b> / 800 points</p>
+        <div class="btn-row">
+          <button class="btn" onclick="playAgainAll()">Play Again</button>
+          <button class="btn secondary" onclick="goHome()">Back to Factor Lab</button>
+        </div>
+      </div>`;
+    logToSheet({timestamp:new Date().toISOString(), school:SCHOOL_NAME, action:"all_complete", score:totalScore});
+    return;
+  }
+  card.innerHTML = `
+    <div style="text-align:center;">
+      <div style="font-size:3rem;">🎉</div>
+      <h2>You finished the ${MODULE_TITLES[modId]}!</h2>
+      <p>You earned: <b>${earned}</b> / ${possible} points</p>
+      <div class="btn-row">
+        <button class="btn" onclick="goHome()">Back to Factor Lab</button>
+        <button class="btn secondary" onclick="openModule('${modId}')">Play Again</button>
+      </div>
+    </div>`;
+}
+
+function playAgainAll(){
+  totalScore = 0;
+  completedModules = new Set();
+  document.querySelectorAll('.card.done').forEach(c=> c.classList.remove('done'));
+  updateScoreboard();
+  goHome();
+}
+
+/* ============ RENDERERS ============ */
+const RENDERERS = {};
+
+RENDERERS.gcf = function(idx, score){
+  const items = SESSION.gcf;
+  if(idx >= items.length){ moduleComplete('gcf', score, items.length*10); return; }
+  const item = items[idx];
+  const opts = shuffle(item.options);
+  const card = document.getElementById('problemCard');
+  card.innerHTML = `
+    <div class="problem-head"><span class="idx">GCF GRABBER</span><span class="idx">${idx+1} / ${items.length}</span></div>
+
+    <div class="example-box">
+      <button class="example-toggle" id="toggleExample">📖 See a worked example first</button>
+      <div class="example-content" id="exampleContent" style="display:none;">
+        <p style="margin:8px 0 4px;"><b>Example:</b> 6x² + 9x</p>
+        <p style="margin:0 0 6px;">Both terms share a factor of <b>3x</b> — that's the GCF.</p>
+        <p style="margin:0;">Divide each term by 3x: 6x² ÷ 3x = 2x, and 9x ÷ 3x = 3.</p>
+        <p style="margin:8px 0 0;">So 6x² + 9x = <b>3x(2x + 3)</b></p>
+      </div>
+    </div>
+
+    <div class="expr">${item.expr}</div>
+    <p style="text-align:center;font-weight:700;">1️⃣ Drag the correct GCF into the slot:</p>
+    <div style="text-align:center;">
+      <span class="slot" id="gcfSlot">?</span> ( <input type="text" id="gcfRest" placeholder="remaining term" style="width:150px;"> )
+    </div>
+    <div class="chip-row" id="gcfChips">
+      ${opts.map(o=>`<div class="chip" draggable="true" data-val="${o}">${o}</div>`).join('')}
+    </div>
+    <div class="hint-box" id="hintBox" style="display:none;">💡 Hint: Find the greatest number and variable that all terms share, then divide each term by it to get what's left inside the parentheses.</div>
+    <div class="feedback" id="fb"></div>
+    <div class="btn-row"><button class="btn" id="checkBtn">Check</button><button class="btn secondary" id="showAnswerBtn" style="display:none;">🏳️ Show Answer</button><button class="btn secondary" onclick="goHome()">🏠 Back to Machines</button></div>
+  `;
+  const slot = document.getElementById('gcfSlot');
+  let placed = null;
+  wireExampleToggle();
+  const checkBtn = document.getElementById('checkBtn');
+  const showAnswerBtn = document.getElementById('showAnswerBtn');
+  const gcfRest = document.getElementById('gcfRest');
+  document.querySelectorAll('#gcfChips .chip').forEach(chip=>{
+    chip.addEventListener('dragstart', e=> e.dataTransfer.setData('text/plain', chip.dataset.val));
+    chip.addEventListener('click', ()=>{
+      placed = chip.dataset.val;
+      slot.textContent = placed; slot.classList.add('filled');
+      document.querySelectorAll('#gcfChips .chip').forEach(c=>c.classList.remove('used'));
+      chip.classList.add('used');
+    });
+  });
+  slot.addEventListener('dragover', e=>{e.preventDefault(); slot.classList.add('over');});
+  slot.addEventListener('dragleave', ()=> slot.classList.remove('over'));
+  slot.addEventListener('drop', e=>{
+    e.preventDefault(); slot.classList.remove('over');
+    placed = e.dataTransfer.getData('text/plain');
+    slot.textContent = placed; slot.classList.add('filled');
+  });
+  showAnswerBtn.onclick = ()=>{
+    placed = item.gcf;
+    slot.textContent = item.gcf; slot.classList.add('filled');
+    gcfRest.value = item.rest;
+    gcfRest.disabled = true;
+    document.querySelectorAll('#gcfChips .chip').forEach(c=>{ c.classList.add('used'); c.style.pointerEvents='none'; });
+    checkBtn.style.display = 'none';
+    showAnswerBtn.style.display = 'none';
+    const fb = document.getElementById('fb');
+    fb.innerHTML = `Here's the answer: ${item.gcf}(${item.rest}). This one's on the house — no points, but you'll get the next one!`;
+    fb.className = "feedback no";
+    const btnRow = document.querySelector('.btn-row');
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'btn';
+    nextBtn.textContent = 'Continue ➡';
+    nextBtn.onclick = ()=> RENDERERS.gcf(idx+1, score);
+    btnRow.prepend(nextBtn);
+  };
+  checkBtn.onclick = ()=>{
+    const restVal = gcfRest.value.replace(/\s+/g,'').toLowerCase();
+    const target = item.rest.replace(/\s+/g,'').toLowerCase();
+    const fb = document.getElementById('fb');
+    const gcfOk = placed === item.gcf;
+    const restOk = restVal === target;
+    if(gcfOk && restOk){
+      fb.textContent = "✅ Correct! " + item.gcf + "(" + item.rest + ")";
+      fb.className = "feedback ok";
+      setTimeout(()=>RENDERERS.gcf(idx+1, score+10), 900);
+    } else {
+      fb.textContent = "❌ Try again. " + (gcfOk ? "The GCF is right, but the remaining term is wrong." : "Double-check the GCF.");
+      fb.className = "feedback no";
+      document.getElementById('hintBox').style.display='block';
+      showAnswerBtn.style.display='inline-block';
+    }
+  };
+};
+
+RENDERERS.diffsq = function(idx, score){
+  const items = SESSION.diffsq;
+  if(idx >= items.length){ moduleComplete('diffsq', score, items.length*10); return; }
+  const item = items[idx];
+  const card = document.getElementById('problemCard');
+  card.innerHTML = `
+    <div class="problem-head"><span class="idx">SQUARE SPLITTER</span><span class="idx">${idx+1} / ${items.length}</span></div>
+
+    <div class="example-box">
+      <button class="example-toggle" id="toggleExample">📖 See a worked example first</button>
+      <div class="example-content" id="exampleContent" style="display:none;">
+        <p style="margin:8px 0 4px;"><b>Example:</b> x² − 25</p>
+        <p style="margin:0 0 6px;">The pattern a² − b² = (a+b)(a−b) is a general rule — a and b just stand for "whatever is being squared." Here, the square root of x² is <b>x</b>, and the square root of 25 is <b>5</b>.</p>
+        <p style="margin:0;">So a = x and b = 5.</p>
+        <p style="margin:8px 0 0;">x² − 25 = <b>(x+5)(x−5)</b></p>
+      </div>
+    </div>
+
+    <div class="expr">${item.expr}</div>
+    <p style="text-align:center;font-weight:700;">a² − b² = (a+b)(a−b)</p>
+    <p style="text-align:center;font-size:0.85rem;color:#777;margin-top:-14px;">(a and b are just labels — type the actual values from the expression above)</p>
+    <div style="text-align:center;display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;">
+      <span>√1st term = </span><input type="text" id="valA" placeholder="?">
+      <span>√2nd term = </span><input type="text" id="valB" placeholder="?">
+    </div>
+    <p style="text-align:center;margin-top:16px;">Answer: (
+      <input type="text" id="fullA1" style="width:70px;" placeholder="?"> + <input type="text" id="fullB1" style="width:70px;" placeholder="?">
+      ) (
+      <input type="text" id="fullA2" style="width:70px;" placeholder="?"> − <input type="text" id="fullB2" style="width:70px;" placeholder="?">
+      )</p>
+    <div class="hint-box" id="hintBox" style="display:none;">💡 Hint: Take the square root of each term first, then apply the pattern (a+b)(a−b).</div>
+    <div class="feedback" id="fb"></div>
+    <div class="btn-row"><button class="btn" id="checkBtn">Check</button><button class="btn secondary" id="showAnswerBtn" style="display:none;">🏳️ Show Answer</button><button class="btn secondary" onclick="goHome()">🏠 Back to Machines</button></div>
+  `;
+  wireExampleToggle();
+  const valA = document.getElementById('valA');
+  const valB = document.getElementById('valB');
+  const fullA1 = document.getElementById('fullA1');
+  const fullB1 = document.getElementById('fullB1');
+  const fullA2 = document.getElementById('fullA2');
+  const fullB2 = document.getElementById('fullB2');
+  const checkBtn = document.getElementById('checkBtn');
+  const showAnswerBtn = document.getElementById('showAnswerBtn');
+  showAnswerBtn.onclick = ()=>{
+    valA.value = item.a; valB.value = item.b;
+    fullA1.value = item.a; fullB1.value = item.b;
+    fullA2.value = item.a; fullB2.value = item.b;
+    [valA,valB,fullA1,fullB1,fullA2,fullB2].forEach(el=>el.disabled=true);
+    checkBtn.style.display = 'none';
+    showAnswerBtn.style.display = 'none';
+    const fb = document.getElementById('fb');
+    fb.innerHTML = `Here's the answer: (${item.a}+${item.b})(${item.a}−${item.b}). This one's on the house — no points, but you'll get the next one!`;
+    fb.className = "feedback no";
+    const btnRow = document.querySelector('.btn-row');
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'btn';
+    nextBtn.textContent = 'Continue ➡';
+    nextBtn.onclick = ()=> RENDERERS.diffsq(idx+1, score);
+    btnRow.prepend(nextBtn);
+  };
+  checkBtn.onclick = ()=>{
+    const norm = s=> (s||"").replace(/\s+/g,'').toLowerCase();
+    const ok = norm(valA.value)===norm(item.a) &&
+               norm(valB.value)===norm(item.b) &&
+               norm(fullA1.value)===norm(item.a) &&
+               norm(fullB1.value)===norm(item.b) &&
+               norm(fullA2.value)===norm(item.a) &&
+               norm(fullB2.value)===norm(item.b);
+    const fb = document.getElementById('fb');
+    if(ok){
+      fb.textContent = `✅ Correct! (${item.a}+${item.b})(${item.a}−${item.b})`;
+      fb.className = "feedback ok";
+      setTimeout(()=>RENDERERS.diffsq(idx+1, score+10), 900);
+    } else {
+      fb.textContent = "❌ Something's off in the blanks. Try again.";
+      fb.className = "feedback no";
+      document.getElementById('hintBox').style.display='block';
+      showAnswerBtn.style.display='inline-block';
+    }
+  };
+};
+
+RENDERERS.pst = function(idx, score){
+  const items = SESSION.pst;
+  if(idx >= items.length){ moduleComplete('pst', score, items.length*10); return; }
+  const item = items[idx];
+  const card = document.getElementById('problemCard');
+  card.innerHTML = `
+    <div class="problem-head"><span class="idx">MIRROR MATCH</span><span class="idx">${idx+1} / ${items.length}</span></div>
+
+    <div class="example-box">
+      <button class="example-toggle" id="toggleExample">📖 See a worked example first</button>
+      <div class="example-content" id="exampleContent" style="display:none;">
+        <p style="margin:8px 0 4px;"><b>Example:</b> x² + 6x + 9</p>
+        <p style="margin:0 0 6px;">√(first term) = x, √(last term) = 3. Check the middle: 2 × x × 3 = 6x — it matches! So this is a PST.</p>
+        <p style="margin:0;">a = x, b = 3, sign = +</p>
+        <p style="margin:8px 0 0;">x² + 6x + 9 = <b>(x+3)²</b></p>
+      </div>
+    </div>
+
+    <div class="expr">${item.expr}</div>
+    <p style="text-align:center;font-weight:700;">1️⃣ Is this a Perfect Square Trinomial?</p>
+    <div class="chip-row">
+      <div class="chip mc" data-v="yes">Yes, it's a PST</div>
+      <div class="chip mc" data-v="no">No, it's not</div>
+    </div>
+    <div id="buildArea" style="display:none;">
+      <p style="text-align:center;font-weight:700;margin-top:14px;">2️⃣ Build it: ( <input type="text" id="bA" style="width:70px;" placeholder="?"> <span id="signShow">±</span> <input type="text" id="bB" style="width:70px;" placeholder="?"> )²</p>
+    </div>
+    <div class="hint-box" id="hintBox" style="display:none;">💡 Hint: In a PST, the middle term equals 2 × (square root of first term) × (square root of last term).</div>
+    <div class="feedback" id="fb"></div>
+    <div class="btn-row"><button class="btn" id="checkBtn">Check</button><button class="btn secondary" id="showAnswerBtn" style="display:none;">🏳️ Show Answer</button><button class="btn secondary" onclick="goHome()">🏠 Back to Machines</button></div>
+  `;
+  let chosen = null;
+  wireExampleToggle();
+  const checkBtn = document.getElementById('checkBtn');
+  const showAnswerBtn = document.getElementById('showAnswerBtn');
+  const bA = document.getElementById('bA');
+  const bB = document.getElementById('bB');
+  document.querySelectorAll('.chip.mc').forEach(c=>{
+    c.addEventListener('click', ()=>{
+      document.querySelectorAll('.chip.mc').forEach(x=>x.classList.remove('selected'));
+      c.classList.add('selected');
+      chosen = c.dataset.v;
+      document.getElementById('buildArea').style.display = (item.isPST) ? 'block' : 'none';
+      if(item.isPST) document.getElementById('signShow').textContent = item.sign;
+    });
+  });
+  showAnswerBtn.onclick = ()=>{
+    const wantsPST = item.isPST ? "yes" : "no";
+    document.querySelectorAll('.chip.mc').forEach(c=>{
+      c.classList.toggle('selected', c.dataset.v === wantsPST);
+      c.style.pointerEvents = 'none';
+    });
+    chosen = wantsPST;
+    const fb = document.getElementById('fb');
+    if(item.isPST){
+      document.getElementById('buildArea').style.display = 'block';
+      document.getElementById('signShow').textContent = item.sign;
+      bA.value = item.a; bB.value = item.b; bA.disabled = true; bB.disabled = true;
+      fb.innerHTML = `Here's the answer: Yes, it's a PST → (${item.a}${item.sign}${item.b})². This one's on the house — no points, but you'll get the next one!`;
+    } else {
+      fb.innerHTML = `Here's the answer: No, it's not a PST. This one's on the house — no points, but you'll get the next one!`;
+    }
+    fb.className = "feedback no";
+    checkBtn.style.display = 'none';
+    showAnswerBtn.style.display = 'none';
+    const btnRow = document.querySelector('.btn-row');
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'btn';
+    nextBtn.textContent = 'Continue ➡';
+    nextBtn.onclick = ()=> RENDERERS.pst(idx+1, score);
+    btnRow.prepend(nextBtn);
+  };
+  checkBtn.onclick = ()=>{
+    const fb = document.getElementById('fb');
+    const wantsPST = item.isPST ? "yes" : "no";
+    if(chosen !== wantsPST){
+      fb.textContent = "❌ Double-check whether this is really a PST.";
+      fb.className = "feedback no";
+      document.getElementById('hintBox').style.display='block';
+      showAnswerBtn.style.display='inline-block';
+      return;
+    }
+    if(!item.isPST){
+      fb.textContent = "✅ Correct! It's not a PST.";
+      fb.className = "feedback ok";
+      setTimeout(()=>RENDERERS.pst(idx+1, score+10), 900);
+      return;
+    }
+    const norm = s=> (s||"").replace(/\s+/g,'').toLowerCase();
+    const ok = norm(bA.value)===norm(item.a) && norm(bB.value)===norm(item.b);
+    if(ok){
+      fb.textContent = `✅ Correct! (${item.a}${item.sign}${item.b})²`;
+      fb.className = "feedback ok";
+      setTimeout(()=>RENDERERS.pst(idx+1, score+10), 900);
+    } else {
+      fb.textContent = "❌ a or b is wrong. Try again.";
+      fb.className = "feedback no";
+      document.getElementById('hintBox').style.display='block';
+      showAnswerBtn.style.display='inline-block';
+    }
+  };
+};
+
+RENDERERS.trinomial = function(idx, score){
+  const items = SESSION.trinomial;
+  if(idx >= items.length){ moduleComplete('trinomial', score, items.length*10); return; }
+  const item = items[idx];
+  const midDisp = (item.b>=0?'+':'\u2212') + Math.abs(item.b) + 'x';
+  const constDisp = (item.c>=0?'+':'\u2212') + Math.abs(item.c);
+  const leadDisp = item.a===1 ? 'x\u00B2' : `${item.a}x\u00B2`;
+  const card = document.getElementById('problemCard');
+  card.innerHTML = `
+    <div class="problem-head"><span class="idx">BOX METHOD</span><span class="idx">${idx+1} / ${items.length}</span></div>
+
+    <div class="example-box">
+      <button class="example-toggle" id="toggleExample">📖 See a worked example first</button>
+      <div class="example-content" id="exampleContent" style="display:none;">
+        <p style="margin:8px 0 4px;"><b>Example:</b> x² + 7x + 12</p>
+        <p style="margin:0 0 10px;">Split x² into <b>x</b> and <b>x</b>. Split 12 into <b>3</b> and <b>4</b>. Cross-multiply: x×4=4x, and x×3=3x. Check: 4x+3x=7x ✓</p>
+        <div class="box-grid-v2 example-grid">
+          <div class="bg-cell bg-header">x²</div>
+          <div class="bg-cell bg-header">+7x</div>
+          <div class="bg-cell bg-header">+12</div>
+          <div class="bg-cell">x</div>
+          <div class="bg-cell">+3x</div>
+          <div class="bg-cell bg-num">3</div>
+          <div class="bg-cell">x</div>
+          <div class="bg-cell">+4x</div>
+          <div class="bg-cell bg-num">4</div>
+        </div>
+        <p style="margin:10px 0;">So x² + 7x + 12 = <b>(x+3)(x+4)</b></p>
+        <p style="margin:14px 0 4px;border-top:1px dashed #9ecbd8;padding-top:10px;"><b>When the leading number isn't 1:</b> 2x² + 7x + 6</p>
+        <p style="margin:0 0 10px;">Split 2x² into <b>2x</b> and <b>x</b>. Split 6 into <b>3</b> and <b>2</b>. Cross-multiply: 2x×2=4x, and x×3=3x. Check: 4x+3x=7x ✓</p>
+        <div class="box-grid-v2 example-grid">
+          <div class="bg-cell bg-header">2x²</div>
+          <div class="bg-cell bg-header">+7x</div>
+          <div class="bg-cell bg-header">+6</div>
+          <div class="bg-cell">2x</div>
+          <div class="bg-cell">+4x</div>
+          <div class="bg-cell bg-num">3</div>
+          <div class="bg-cell">x</div>
+          <div class="bg-cell">+3x</div>
+          <div class="bg-cell bg-num">2</div>
+        </div>
+        <p style="margin:10px 0 0;">So 2x² + 7x + 6 = <b>(2x+3)(x+2)</b></p>
+      </div>
+    </div>
+
+    <div class="expr">${item.expr}</div>
+    <p style="text-align:center;font-weight:700;">Split the terms, then multiply <u>diagonally</u> (criss-cross ✕, not straight down) so the two cross-products add up to ${midDisp}:</p>
+
+    <div class="box-grid-v2" id="boxGrid">
+      <div class="bg-cell bg-header">${leadDisp}</div>
+      <div class="bg-cell bg-header">${midDisp}</div>
+      <div class="bg-cell bg-header">${constDisp}</div>
+      <div class="bg-cell bg-num"><input type="text" id="a1Term" class="grid-input" placeholder="?x"></div>
+      <div class="bg-cell bg-num cross-cell"><span class="cross-arrow" title="top-left × bottom-right">↘</span><input type="text" id="cross1" class="grid-input" placeholder="?x"></div>
+      <div class="bg-cell bg-num"><input type="text" id="c1Input" class="grid-input" placeholder="?"></div>
+      <div class="bg-cell bg-num"><input type="text" id="a2Term" class="grid-input" placeholder="?x"></div>
+      <div class="bg-cell bg-num cross-cell"><span class="cross-arrow" title="bottom-left × top-right">↖</span><input type="text" id="cross2" class="grid-input" placeholder="?x"></div>
+      <div class="bg-cell bg-num"><input type="text" id="c2Input" class="grid-input" placeholder="?"></div>
+    </div>
+    <p class="cross-legend">↘ = (top-left number) × (bottom-right number) &nbsp;&nbsp; ↖ = (bottom-left number) × (top-right number)</p>
+    <div class="answer-bar">Ans: ( <input type="text" id="ansTerm1" class="grid-input answer-input" placeholder="?x"> + <input type="text" id="ansC1" class="grid-input answer-input" placeholder="?"> ) ( <input type="text" id="ansTerm2" class="grid-input answer-input" placeholder="?x"> + <input type="text" id="ansC2" class="grid-input answer-input" placeholder="?"> )</div>
+    <div class="hint-box" id="hintBox" style="display:none;">💡 Hint: Cross-multiply diagonally — top-left × bottom-right, and bottom-left × top-right (follow the ↘ and ↖ arrows in the grid). Those two cross-products must add up to the middle term. Then read straight across each row for your final answer.</div>
+    <div class="feedback" id="fb"></div>
+    <div class="btn-row"><button class="btn" id="checkBtn">Check</button><button class="btn secondary" id="showAnswerBtn" style="display:none;">🏳️ Show Answer</button><button class="btn secondary" onclick="goHome()">🏠 Back to Machines</button></div>
+  `;
+  wireExampleToggle();
+  const a1Term = document.getElementById('a1Term');
+  const a2Term = document.getElementById('a2Term');
+  const cross1 = document.getElementById('cross1');
+  const cross2 = document.getElementById('cross2');
+  const c1Input = document.getElementById('c1Input');
+  const c2Input = document.getElementById('c2Input');
+  const ansTerm1 = document.getElementById('ansTerm1');
+  const ansC1 = document.getElementById('ansC1');
+  const ansTerm2 = document.getElementById('ansTerm2');
+  const ansC2 = document.getElementById('ansC2');
+  const checkBtn = document.getElementById('checkBtn');
+  const showAnswerBtn = document.getElementById('showAnswerBtn');
+
+  function parseCoeffX(str){
+    const s = (str||'').replace(/\s+/g,'').toLowerCase().replace(/\u2212/g,'-');
+    const m = s.match(/^([+-]?\d*)x$/);
+    if(!m) return NaN;
+    const numStr = m[1];
+    if(numStr===''||numStr==='+') return 1;
+    if(numStr==='-') return -1;
+    return parseInt(numStr,10);
+  }
+  function parseNum(str){
+    const s = (str||'').replace(/\s+/g,'').replace(/\u2212/g,'-');
+    if(s==='') return NaN;
+    return parseInt(s,10);
+  }
+
+  showAnswerBtn.onclick = ()=>{
+    const c1t = item.a1===1 ? 'x' : item.a1+'x';
+    const c2t = item.a2===1 ? 'x' : item.a2+'x';
+    a1Term.value = c1t; a2Term.value = c2t;
+    c1Input.value = item.c1; c2Input.value = item.c2;
+    const cr1v = item.a1*item.c2, cr2v = item.a2*item.c1;
+    cross1.value = (cr1v>=0?'+':'')+cr1v+'x';
+    cross2.value = (cr2v>=0?'+':'')+cr2v+'x';
+    ansTerm1.value = c1t; ansC1.value = item.c1;
+    ansTerm2.value = c2t; ansC2.value = item.c2;
+    [a1Term,a2Term,cross1,cross2,c1Input,c2Input,ansTerm1,ansC1,ansTerm2,ansC2].forEach(el=>el.disabled=true);
+    checkBtn.style.display = 'none';
+    showAnswerBtn.style.display = 'none';
+    const fb = document.getElementById('fb');
+    fb.innerHTML = `Here's the answer: (${c1t}${item.c1>=0?'+':''}${item.c1})(${c2t}${item.c2>=0?'+':''}${item.c2}). This one's on the house — no points, but you'll get the next one!`;
+    fb.className = "feedback no";
+    const btnRow = document.querySelector('.btn-row');
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'btn';
+    nextBtn.textContent = 'Continue ➡';
+    nextBtn.onclick = ()=> RENDERERS.trinomial(idx+1, score);
+    btnRow.prepend(nextBtn);
+  };
+
+  checkBtn.onclick = ()=>{
+    const fb = document.getElementById('fb');
+    const a1 = parseCoeffX(a1Term.value);
+    const a2 = parseCoeffX(a2Term.value);
+    const c1 = parseNum(c1Input.value);
+    const c2 = parseNum(c2Input.value);
+    const cr1 = parseCoeffX(cross1.value);
+    const cr2 = parseCoeffX(cross2.value);
+    const at1 = parseCoeffX(ansTerm1.value);
+    const ac1 = parseNum(ansC1.value);
+    const at2 = parseCoeffX(ansTerm2.value);
+    const ac2 = parseNum(ansC2.value);
+
+    const vals = [a1,a2,c1,c2,cr1,cr2,at1,ac1,at2,ac2];
+    if(vals.some(v=>isNaN(v))){
+      fb.textContent="Fill in all the boxes, including the final answer at the bottom."; fb.className="feedback no"; return;
+    }
+    const gridOk = (a1*a2 === item.a) && (c1*c2 === item.c) && (a1*c2 + a2*c1 === item.b);
+    const crossOk = (cr1 === a1*c2) && (cr2 === a2*c1);
+    const ansOk = (at1===a1 && ac1===c1 && at2===a2 && ac2===c2) || (at1===a2 && ac1===c2 && at2===a1 && ac2===c1);
+
+    if(gridOk && crossOk && ansOk){
+      fb.textContent = `✅ Correct! (${a1===1?'x':a1+'x'}${c1>=0?'+':''}${c1})(${a2===1?'x':a2+'x'}${c2>=0?'+':''}${c2})`;
+      fb.className = "feedback ok";
+      setTimeout(()=>RENDERERS.trinomial(idx+1, score+10), 1000);
+    } else if(!gridOk){
+      fb.textContent = "❌ Those splits don't multiply/add up correctly. Try again.";
+      fb.className = "feedback no";
+      document.getElementById('hintBox').style.display='block';
+      showAnswerBtn.style.display='inline-block';
+    } else if(!crossOk){
+      fb.textContent = "❌ Check your cross-multiplication — remember, it's diagonal (↘ ↖), not straight down.";
+      fb.className = "feedback no";
+      document.getElementById('hintBox').style.display='block';
+      showAnswerBtn.style.display='inline-block';
+    } else {
+      fb.textContent = "❌ The box is correct, but the final answer at the bottom doesn't match. Try again.";
+      fb.className = "feedback no";
+      document.getElementById('hintBox').style.display='block';
+      showAnswerBtn.style.display='inline-block';
+    }
+  };
+};
+
+RENDERERS.completesquare = function(idx, score){
+  const items = SESSION.completesquare;
+  if(idx >= items.length){ moduleComplete('completesquare', score, items.length*10); return; }
+  const item = items[idx];
+  const card = document.getElementById('problemCard');
+  card.innerHTML = `
+    <div class="problem-head"><span class="idx">SQUARE COMPLETER</span><span class="idx">${idx+1} / ${items.length}</span></div>
+
+    <div class="example-box">
+      <button class="example-toggle" id="toggleExample">📖 See a worked example first</button>
+      <div class="example-content" id="exampleContent" style="display:none;">
+        <p style="margin:8px 0 4px;"><b>Example:</b> x² + 8x + 5</p>
+        <p style="margin:0 0 6px;">Step 1 — Half of b (8 ÷ 2): <b>4</b></p>
+        <p style="margin:0 0 6px;">Step 2 — Square it (4²): <b>16</b></p>
+        <p style="margin:0 0 6px;">Step 3 — Add and subtract 16: x²+8x+16−16+5 = (x+4)² + (5−16)</p>
+        <p style="margin:8px 0 0;">So x² + 8x + 5 = <b>(x+4)² − 11</b></p>
+      </div>
+    </div>
+
+    <div class="expr">${item.expr}</div>
+    <p style="text-align:center;font-weight:700;">Step 1: Half of b (b ÷ 2):</p>
+    <div style="text-align:center;margin-bottom:14px;"><input type="text" id="kInput" style="width:70px;" placeholder="?"></div>
+    <p style="text-align:center;font-weight:700;">Step 2: Square it (that number²):</p>
+    <div style="text-align:center;margin-bottom:14px;"><input type="text" id="kSqInput" style="width:70px;" placeholder="?"></div>
+    <p style="text-align:center;font-weight:700;">Step 3: Write the completed square form:</p>
+    <div style="text-align:center;margin-bottom:6px;">( x + <input type="text" id="finalK" style="width:60px;" placeholder="?"> )² + <input type="text" id="finalConst" style="width:60px;" placeholder="?"></div>
+    <div class="hint-box" id="hintBox" style="display:none;">💡 Hint: k = b ÷ 2. The completed square form is always (x + k)² + (c − k²). Don't forget k² can make the outer number smaller than c, or even negative!</div>
+    <div class="feedback" id="fb"></div>
+    <div class="btn-row"><button class="btn" id="checkBtn">Check</button><button class="btn secondary" id="showAnswerBtn" style="display:none;">🏳️ Show Answer</button><button class="btn secondary" onclick="goHome()">🏠 Back to Machines</button></div>
+  `;
+  wireExampleToggle();
+  const kInput = document.getElementById('kInput');
+  const kSqInput = document.getElementById('kSqInput');
+  const finalK = document.getElementById('finalK');
+  const finalConst = document.getElementById('finalConst');
+  const checkBtn = document.getElementById('checkBtn');
+  const showAnswerBtn = document.getElementById('showAnswerBtn');
+
+  showAnswerBtn.onclick = ()=>{
+    kInput.value = item.k;
+    kSqInput.value = item.kSq;
+    finalK.value = item.k;
+    finalConst.value = item.outerConst;
+    [kInput,kSqInput,finalK,finalConst].forEach(el=>el.disabled=true);
+    checkBtn.style.display = 'none';
+    showAnswerBtn.style.display = 'none';
+    const fb = document.getElementById('fb');
+    fb.innerHTML = `Here's the answer: (x${item.k>=0?'+':''}${item.k})²${item.outerConst>=0?'+':''}${item.outerConst}. This one's on the house — no points, but you'll get the next one!`;
+    fb.className = "feedback no";
+    const btnRow = document.querySelector('.btn-row');
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'btn';
+    nextBtn.textContent = 'Continue ➡';
+    nextBtn.onclick = ()=> RENDERERS.completesquare(idx+1, score);
+    btnRow.prepend(nextBtn);
+  };
+
+  checkBtn.onclick = ()=>{
+    const fb = document.getElementById('fb');
+    const k = parseInt(kInput.value, 10);
+    const kSq = parseInt(kSqInput.value, 10);
+    const fk = parseInt(finalK.value, 10);
+    const fc = parseInt(finalConst.value, 10);
+    if([k,kSq,fk,fc].some(v=>isNaN(v))){
+      fb.textContent="Fill in all the boxes first."; fb.className="feedback no"; return;
+    }
+    const kOk = k === item.k;
+    const kSqOk = kSq === item.kSq;
+    const finalOk = fk === item.k && fc === item.outerConst;
+    if(kOk && kSqOk && finalOk){
+      fb.textContent = `✅ Correct! (x${item.k>=0?'+':''}${item.k})²${item.outerConst>=0?'+':''}${item.outerConst}`;
+      fb.className = "feedback ok";
+      setTimeout(()=>RENDERERS.completesquare(idx+1, score+10), 1000);
+    } else if(!kOk){
+      fb.textContent = "❌ Check Step 1 — divide b by 2 again.";
+      fb.className = "feedback no";
+      document.getElementById('hintBox').style.display='block';
+      showAnswerBtn.style.display='inline-block';
+    } else if(!kSqOk){
+      fb.textContent = "❌ Check Step 2 — square your Step 1 answer.";
+      fb.className = "feedback no";
+      document.getElementById('hintBox').style.display='block';
+      showAnswerBtn.style.display='inline-block';
+    } else {
+      fb.textContent = "❌ The final form doesn't match. Remember: (x + k)² + (c − k²).";
+      fb.className = "feedback no";
+      document.getElementById('hintBox').style.display='block';
+      showAnswerBtn.style.display='inline-block';
+    }
+  };
+};
+
+RENDERERS.solvesquare = function(idx, score){
+  const items = SESSION.solvesquare;
+  if(idx >= items.length){ moduleComplete('solvesquare', score, items.length*10); return; }
+  const item = items[idx];
+  const card = document.getElementById('problemCard');
+  card.innerHTML = `
+    <div class="problem-head"><span class="idx">EQUATION SOLVER</span><span class="idx">${idx+1} / ${items.length}</span></div>
+
+    <div class="example-box">
+      <button class="example-toggle" id="toggleExample">📖 See a worked example first</button>
+      <div class="example-content" id="exampleContent" style="display:none;">
+        <p style="margin:8px 0 4px;"><b>Example:</b> x² + 6x − 7 = 0</p>
+        <p style="margin:0 0 6px;">Step 1 — Move the constant: x² + 6x = <b>7</b></p>
+        <p style="margin:0 0 6px;">Step 2 — Half of b (6 ÷ 2): <b>3</b></p>
+        <p style="margin:0 0 6px;">Step 3 — Square it (3²): <b>9</b></p>
+        <p style="margin:0 0 6px;">Step 4 — Add 9 to both sides: x²+6x+9 = 7+9 → (x+3)² = <b>16</b></p>
+        <p style="margin:0 0 6px;">Step 5 — Square root both sides: x+3 = <b>±4</b></p>
+        <p style="margin:8px 0 0;">Step 6 — Solve: x = −3+4 = <b>1</b>, or x = −3−4 = <b>−7</b></p>
+      </div>
+    </div>
+
+    <div class="expr">${item.expr}</div>
+    <p style="text-align:center;font-weight:700;">Step 1: Move the constant to the right side: x² ${item.b>=0?'+':'\u2212'} ${Math.abs(item.b)}x = <input type="text" id="moveConstInput" style="width:60px;" placeholder="?"></p>
+    <p style="text-align:center;font-weight:700;">Step 2: Half of b (b ÷ 2):</p>
+    <div style="text-align:center;margin-bottom:10px;"><input type="text" id="kInput" style="width:70px;" placeholder="?"></div>
+    <p style="text-align:center;font-weight:700;">Step 3: Square it:</p>
+    <div style="text-align:center;margin-bottom:10px;"><input type="text" id="kSqInput" style="width:70px;" placeholder="?"></div>
+    <p style="text-align:center;font-weight:700;">Step 4: Add that to both sides — what's the new right side?</p>
+    <div style="text-align:center;margin-bottom:10px;"><input type="text" id="rightInput" style="width:70px;" placeholder="?"></div>
+    <p style="text-align:center;font-weight:700;">Step 5: Take the square root of both sides — what's √(right side)?</p>
+    <div style="text-align:center;margin-bottom:10px;"><input type="text" id="sqrtInput" style="width:70px;" placeholder="?"></div>
+    <p style="text-align:center;font-weight:700;">Step 6: Solve for x:</p>
+    <div style="text-align:center;margin-bottom:6px;">x = <input type="text" id="x1Input" style="width:60px;" placeholder="?"> &nbsp;or&nbsp; x = <input type="text" id="x2Input" style="width:60px;" placeholder="?"></div>
+    <div class="hint-box" id="hintBox" style="display:none;">💡 Hint: k = b ÷ 2. After adding k² to both sides, the equation becomes (x+k)² = (that new number). Take the square root of both sides (±), then solve x = −k + √ and x = −k − √.</div>
+    <div class="feedback" id="fb"></div>
+    <div class="btn-row"><button class="btn" id="checkBtn">Check</button><button class="btn secondary" id="showAnswerBtn" style="display:none;">🏳️ Show Answer</button><button class="btn secondary" onclick="goHome()">🏠 Back to Machines</button></div>
+  `;
+  wireExampleToggle();
+  const moveConstInput = document.getElementById('moveConstInput');
+  const kInput = document.getElementById('kInput');
+  const kSqInput = document.getElementById('kSqInput');
+  const rightInput = document.getElementById('rightInput');
+  const sqrtInput = document.getElementById('sqrtInput');
+  const x1Input = document.getElementById('x1Input');
+  const x2Input = document.getElementById('x2Input');
+  const checkBtn = document.getElementById('checkBtn');
+  const showAnswerBtn = document.getElementById('showAnswerBtn');
+
+  showAnswerBtn.onclick = ()=>{
+    moveConstInput.value = item.moveConst;
+    kInput.value = item.k;
+    kSqInput.value = item.kSq;
+    rightInput.value = item.rightAfterAdd;
+    sqrtInput.value = item.m;
+    x1Input.value = item.x1;
+    x2Input.value = item.x2;
+    [moveConstInput,kInput,kSqInput,rightInput,sqrtInput,x1Input,x2Input].forEach(el=>el.disabled=true);
+    checkBtn.style.display = 'none';
+    showAnswerBtn.style.display = 'none';
+    const fb = document.getElementById('fb');
+    fb.innerHTML = `Here's the answer: x = ${item.x1} or x = ${item.x2}. This one's on the house — no points, but you'll get the next one!`;
+    fb.className = "feedback no";
+    const btnRow = document.querySelector('.btn-row');
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'btn';
+    nextBtn.textContent = 'Continue ➡';
+    nextBtn.onclick = ()=> RENDERERS.solvesquare(idx+1, score);
+    btnRow.prepend(nextBtn);
+  };
+
+  checkBtn.onclick = ()=>{
+    const fb = document.getElementById('fb');
+    const moveConst = parseInt(moveConstInput.value, 10);
+    const k = parseInt(kInput.value, 10);
+    const kSq = parseInt(kSqInput.value, 10);
+    const right = parseInt(rightInput.value, 10);
+    const sqrtVal = parseInt(sqrtInput.value, 10);
+    const x1 = parseInt(x1Input.value, 10);
+    const x2 = parseInt(x2Input.value, 10);
+    if([moveConst,k,kSq,right,sqrtVal,x1,x2].some(v=>isNaN(v))){
+      fb.textContent="Fill in all the boxes first."; fb.className="feedback no"; return;
+    }
+    const moveOk = moveConst === item.moveConst;
+    const kOk = k === item.k;
+    const kSqOk = kSq === item.kSq;
+    const rightOk = right === item.rightAfterAdd;
+    const sqrtOk = sqrtVal === item.m;
+    const xOk = (x1===item.x1 && x2===item.x2) || (x1===item.x2 && x2===item.x1);
+    if(moveOk && kOk && kSqOk && rightOk && sqrtOk && xOk){
+      fb.textContent = `✅ Correct! x = ${item.x1} or x = ${item.x2}`;
+      fb.className = "feedback ok";
+      setTimeout(()=>RENDERERS.solvesquare(idx+1, score+10), 1000);
+    } else if(!moveOk){
+      fb.textContent = "❌ Check Step 1 — move the constant to the other side (flip its sign).";
+      fb.className = "feedback no";
+      document.getElementById('hintBox').style.display='block';
+      showAnswerBtn.style.display='inline-block';
+    } else if(!kOk){
+      fb.textContent = "❌ Check Step 2 — divide b by 2 again.";
+      fb.className = "feedback no";
+      document.getElementById('hintBox').style.display='block';
+      showAnswerBtn.style.display='inline-block';
+    } else if(!kSqOk){
+      fb.textContent = "❌ Check Step 3 — square your Step 2 answer.";
+      fb.className = "feedback no";
+      document.getElementById('hintBox').style.display='block';
+      showAnswerBtn.style.display='inline-block';
+    } else if(!rightOk){
+      fb.textContent = "❌ Check Step 4 — add your Step 3 answer to the Step 1 result.";
+      fb.className = "feedback no";
+      document.getElementById('hintBox').style.display='block';
+      showAnswerBtn.style.display='inline-block';
+    } else if(!sqrtOk){
+      fb.textContent = "❌ Check Step 5 — take the square root of your Step 4 answer.";
+      fb.className = "feedback no";
+      document.getElementById('hintBox').style.display='block';
+      showAnswerBtn.style.display='inline-block';
+    } else {
+      fb.textContent = "❌ Check Step 6 — x = −k + (square root) and x = −k − (square root).";
+      fb.className = "feedback no";
+      document.getElementById('hintBox').style.display='block';
+      showAnswerBtn.style.display='inline-block';
+    }
+  };
+};
+
+RENDERERS.cubes = function(idx, score){
+  const items = SESSION.cubes;
+  if(idx >= items.length){ moduleComplete('cubes', score, items.length*10); return; }
+  const item = items[idx];
+  const sign2 = item.sign==="+" ? "\u2212" : "+";
+  const card = document.getElementById('problemCard');
+  card.innerHTML = `
+    <div class="problem-head"><span class="idx">CUBE CRACKER</span><span class="idx">${idx+1} / ${items.length}</span></div>
+
+    <div class="example-box">
+      <button class="example-toggle" id="toggleExample">📖 See a worked example first</button>
+      <div class="example-content" id="exampleContent" style="display:none;">
+        <p style="margin:8px 0 4px;"><b>Example:</b> x³ + 8</p>
+        <p style="margin:0 0 6px;">Cube root of x³ is x, cube root of 8 is 2. So a = x, b = 2.</p>
+        <p style="margin:0;">a³ + b³ = (a+b)(a² − ab + b²) → (x+2)(x² − 2x + 4)</p>
+        <p style="margin:8px 0 0;">x³ + 8 = <b>(x+2)(x²−2x+4)</b></p>
+      </div>
+    </div>
+
+    <div class="expr">${item.expr}</div>
+    <p style="text-align:center;font-weight:700;">a³ ${item.sign} b³ = (a ${item.sign} b)(a² ${sign2} ab + b²)</p>
+    <div style="text-align:center;margin-bottom:10px;">
+      <span>Find: a = </span><input type="text" id="cA" style="width:70px;" placeholder="?">
+      <span> b = </span><input type="text" id="cB" style="width:70px;" placeholder="?">
+    </div>
+    <p style="text-align:center;">Answer: ( <input type="text" id="p1a" style="width:60px;" placeholder="?"> ${item.sign} <input type="text" id="p1b" style="width:60px;" placeholder="?"> )
+    ( <input type="text" id="p2a" style="width:60px;" placeholder="a²"> ${sign2} <input type="text" id="p2ab" style="width:60px;" placeholder="ab"> + <input type="text" id="p2b" style="width:60px;" placeholder="b²"> )</p>
+    <div class="hint-box" id="hintBox" style="display:none;">💡 Hint: a² = a·a, ab = a×b, b² = b·b. The middle sign is always the opposite of the first sign.</div>
+    <div class="feedback" id="fb"></div>
+    <div class="btn-row"><button class="btn" id="checkBtn">Check</button><button class="btn secondary" id="showAnswerBtn" style="display:none;">🏳️ Show Answer</button><button class="btn secondary" onclick="goHome()">🏠 Back to Machines</button></div>
+  `;
+  wireExampleToggle();
+  const cA = document.getElementById('cA');
+  const cB = document.getElementById('cB');
+  const p1a = document.getElementById('p1a');
+  const p1b = document.getElementById('p1b');
+  const p2a = document.getElementById('p2a');
+  const p2ab = document.getElementById('p2ab');
+  const p2b = document.getElementById('p2b');
+  const checkBtn = document.getElementById('checkBtn');
+  const showAnswerBtn = document.getElementById('showAnswerBtn');
+  showAnswerBtn.onclick = ()=>{
+    const a = item.a, b = item.b;
+    cA.value = a; cB.value = b;
+    p1a.value = a; p1b.value = b;
+    p2a.value = a+"\u00B2"; p2ab.value = a+b; p2b.value = b+"\u00B2";
+    [cA,cB,p1a,p1b,p2a,p2ab,p2b].forEach(el=>el.disabled=true);
+    checkBtn.style.display = 'none';
+    showAnswerBtn.style.display = 'none';
+    const fb = document.getElementById('fb');
+    fb.innerHTML = `Here's the answer: (${a}${item.sign}${b})(${a}\u00B2 ${sign2} ${a}${b} + ${b}\u00B2). This one's on the house — no points, but you'll get the next one!`;
+    fb.className = "feedback no";
+    const btnRow = document.querySelector('.btn-row');
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'btn';
+    nextBtn.textContent = 'Continue ➡';
+    nextBtn.onclick = ()=> RENDERERS.cubes(idx+1, score);
+    btnRow.prepend(nextBtn);
+  };
+  checkBtn.onclick = ()=>{
+    const norm = s=> (s||"").replace(/\s+/g,'').toLowerCase().replace(/\^2/g,'\u00B2');
+    const a = item.a, b = item.b;
+    const wantA2 = norm(a+"\u00B2");
+    const wantAB = norm(a+"\u00B7"+b) === norm(p2ab.value) || norm(a+b)===norm(p2ab.value) || norm(a+"*"+b)===norm(p2ab.value);
+    const ok =
+      norm(cA.value)===norm(a) &&
+      norm(cB.value)===norm(b) &&
+      norm(p1a.value)===norm(a) &&
+      norm(p1b.value)===norm(b) &&
+      (norm(p2a.value)===wantA2 || norm(p2a.value)===norm(a+"^2")) &&
+      wantAB &&
+      (norm(p2b.value)===norm(b+"\u00B2") || norm(p2b.value)===norm(b+"^2"));
+    const fb = document.getElementById('fb');
+    if(ok){
+      fb.textContent = "✅ Correct! Cube cracked.";
+      fb.className = "feedback ok";
+      setTimeout(()=>RENDERERS.cubes(idx+1, score+10), 900);
+    } else {
+      fb.textContent = "❌ Something's wrong. Tip: type it exactly like the placeholder example (e.g. "+a+"\u00B2, "+a+b+", "+b+"\u00B2).";
+      fb.className = "feedback no";
+      document.getElementById('hintBox').style.display='block';
+      showAnswerBtn.style.display='inline-block';
+    }
+  };
+};
+
+RENDERERS.grouping = function(idx, score){
+  const items = SESSION.grouping;
+  if(idx >= items.length){ moduleComplete('grouping', score, items.length*10); return; }
+  const item = items[idx];
+  const shuffledTerms = shuffle(item.terms.map((t,i)=>({t,i})));
+  const card = document.getElementById('problemCard');
+  card.innerHTML = `
+    <div class="problem-head"><span class="idx">GROUP &amp; SORT</span><span class="idx">${idx+1} / ${items.length}</span></div>
+
+    <div class="example-box">
+      <button class="example-toggle" id="toggleExample">📖 See a worked example first</button>
+      <div class="example-content" id="exampleContent" style="display:none;">
+        <p style="margin:8px 0 4px;"><b>Example:</b> x³ + 3x² + 2x + 6</p>
+        <p style="margin:0 0 6px;">Group 1: (x³ + 3x²) → common factor x² → x²(x+3)</p>
+        <p style="margin:0 0 6px;">Group 2: (2x + 6) → common factor 2 → 2(x+3)</p>
+        <p style="margin:0;">Both groups share the binomial <b>(x+3)</b> — that's the common factor.</p>
+        <p style="margin:8px 0 0;">x³+3x²+2x+6 = <b>(x+3)(x²+2)</b></p>
+      </div>
+    </div>
+
+    <div class="expr">${item.terms.join(' ').replace(/\+/g,' + ').replace(/\u2212/g,' \u2212 ')}</div>
+    <p style="text-align:center;font-weight:700;">Drag the terms into 2 groups (2 terms per group):</p>
+    <div class="chip-row" id="termPool">
+      ${shuffledTerms.map(o=>`<div class="term-chip" draggable="true" data-t="${o.t}" data-i="${o.i}">${o.t}</div>`).join('')}
+    </div>
+    <div class="group-zone">
+      <div class="zone" id="zone1"><h4>Group 1</h4></div>
+      <div class="zone" id="zone2"><h4>Group 2</h4></div>
+    </div>
+    <p style="text-align:center;">Common factor: <input type="text" id="commonF" style="width:150px;" placeholder="e.g. x+3"></p>
+    <div class="hint-box" id="hintBox" style="display:none;">💡 Hint: Group terms that share a common factor, factor each group separately, then find the matching binomial factor.</div>
+    <div class="feedback" id="fb"></div>
+    <div class="btn-row"><button class="btn" id="checkBtn">Check</button><button class="btn secondary" id="showAnswerBtn" style="display:none;">🏳️ Show Answer</button><button class="btn secondary" onclick="goHome()">🏠 Back to Machines</button></div>
+  `;
+  wireExampleToggle();
+  const zone1 = document.getElementById('zone1');
+  const zone2 = document.getElementById('zone2');
+  const commonF = document.getElementById('commonF');
+  const checkBtn = document.getElementById('checkBtn');
+  const showAnswerBtn = document.getElementById('showAnswerBtn');
+  [zone1, zone2].forEach(zone=>{
+    zone.addEventListener('dragover', e=>{e.preventDefault(); zone.classList.add('over');});
+    zone.addEventListener('dragleave', ()=> zone.classList.remove('over'));
+    zone.addEventListener('drop', e=>{
+      e.preventDefault(); zone.classList.remove('over');
+      const term = e.dataTransfer.getData('text/plain');
+      const chip = document.querySelector(`#termPool .term-chip[data-t="${CSS.escape(term)}"]`);
+      if(chip){
+        const clone = chip.cloneNode(true);
+        clone.setAttribute('draggable','false');
+        clone.style.cursor='default';
+        zone.appendChild(clone);
+        chip.remove();
+      }
+    });
+  });
+  document.querySelectorAll('#termPool .term-chip').forEach(chip=>{
+    chip.addEventListener('dragstart', e=> e.dataTransfer.setData('text/plain', chip.dataset.t));
+  });
+  showAnswerBtn.onclick = ()=>{
+    item.terms.forEach(t=>{
+      const chip = document.querySelector(`.term-chip[data-t="${CSS.escape(t)}"]`);
+      if(chip){
+        chip.setAttribute('draggable','false');
+        chip.style.cursor='default';
+        (item.g1.includes(t) ? zone1 : zone2).appendChild(chip);
+      }
+    });
+    commonF.value = item.common;
+    commonF.disabled = true;
+    checkBtn.style.display = 'none';
+    showAnswerBtn.style.display = 'none';
+    const fb = document.getElementById('fb');
+    fb.innerHTML = `Here's the answer: (${item.common})(${item.f1}${item.f1===item.f2 ? "" : " , "+item.f2}). This one's on the house — no points, but you'll get the next one!`;
+    fb.className = "feedback no";
+    const btnRow = document.querySelector('.btn-row');
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'btn';
+    nextBtn.textContent = 'Continue ➡';
+    nextBtn.onclick = ()=> RENDERERS.grouping(idx+1, score);
+    btnRow.prepend(nextBtn);
+  };
+  checkBtn.onclick = ()=>{
+    const g1terms = Array.from(zone1.querySelectorAll('.term-chip')).map(c=>c.dataset.t).sort();
+    const g2terms = Array.from(zone2.querySelectorAll('.term-chip')).map(c=>c.dataset.t).sort();
+    const want1 = item.g1.slice().sort();
+    const want2 = item.g2.slice().sort();
+    const groupOk = (JSON.stringify(g1terms)===JSON.stringify(want1) && JSON.stringify(g2terms)===JSON.stringify(want2)) ||
+                    (JSON.stringify(g1terms)===JSON.stringify(want2) && JSON.stringify(g2terms)===JSON.stringify(want1));
+    const norm = s=> (s||"").replace(/\s+/g,'').toLowerCase();
+    const commonOk = norm(commonF.value)===norm(item.common);
+    const fb = document.getElementById('fb');
+    if(groupOk && commonOk){
+      fb.textContent = "✅ Correct! (" + item.common + ")(" + item.f1 + (item.f1===item.f2 ? "" : " , "+item.f2) + ")";
+      fb.className = "feedback ok";
+      setTimeout(()=>RENDERERS.grouping(idx+1, score+10), 1000);
+    } else {
+      fb.textContent = "❌ " + (!groupOk ? "The grouping is wrong." : "The grouping is right but the common factor is wrong.");
+      fb.className = "feedback no";
+      document.getElementById('hintBox').style.display='block';
+      showAnswerBtn.style.display='inline-block';
+    }
+  };
+};
+
+updateScoreboard();
+</script>
+</body>
+</html>
